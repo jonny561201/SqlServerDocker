@@ -1,0 +1,19 @@
+version: "3"
+services:
+  db:
+    build: ./docker/msSql
+    container_name: "msSql-test"
+    ports:
+    - "1433:1433"
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password123!
+      - MSSQL_PID=Express
+
+#  flyway:
+#    build: ./docker/flyway
+#    container_name: "msSql-flyway"
+#    volumes:
+#    - ./docker/flyway/db/migrate:/var/flyway
+#    depends_on:
+#    - db
