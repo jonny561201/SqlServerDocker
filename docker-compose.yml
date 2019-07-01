@@ -2,7 +2,7 @@ version: "3"
 services:
   db:
     build: ./docker/msSql
-    container_name: "msSql-test"
+    container_name: "MsSqlTest"
     ports:
     - "1433:1433"
     environment:
