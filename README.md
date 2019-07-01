@@ -1,4 +1,4 @@
-#Sample SQL Server Project with Docker
+# Sample SQL Server Project with Docker
     - Orchestrated setup of Sql Server Docker container
     - Created a sample project that starts up a base Sql Server docker image
     - Executes the creation of a Database against Sql Docker container
