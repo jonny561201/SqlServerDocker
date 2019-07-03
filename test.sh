@@ -4,7 +4,7 @@ SQL_PASS=Password123!
 SQL_USER=sa
 SQL_DOCKER_NAME="MsSqlTest"
 SQL_PORT=1433
-PRESENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 
 function sleepBeforeMigration {
@@ -18,7 +18,7 @@ function dockerSqlCreateDatabase {
 }
 
 function dockerFlywayMigration {
-    DOCKER_VOLUME=$PRESENT_DIR/docker/flyway/db/migration
+    DOCKER_VOLUME=$SCRIPT_DIR/docker/flyway/db/migration
     WINDOWS_VOLUME=$(echo $DOCKER_VOLUME | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
     echo "----------Flyway Volume set to: $DOCKER_VOLUME"
     echo "----------Executing Flyway Migrations----------"
@@ -27,7 +27,9 @@ function dockerFlywayMigration {
 
 function dockerCompose {
     echo "----------Starting Up Docker Images----------"
+    pushd $SCRIPT_DIR
     docker-compose up -d
+    popd
 }
 
 
