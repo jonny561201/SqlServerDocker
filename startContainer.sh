@@ -18,8 +18,8 @@ function waitForHealthyContainer {
 }
 
 function dockerSqlCreateDatabase {
-    echo "----------Creating PlanManagement Database----------"
-    docker exec $SQL_DOCKER_NAME ./opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SQL_PASS -Q "CREATE DATABASE PlanManagement;"
+    echo "----------Creating $DB_NAME Database----------"
+    docker exec $SQL_DOCKER_NAME ./opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P $SQL_PASS -Q "CREATE DATABASE $DB_NAME;"
 }
 
 function dockerFlywayMigration {
@@ -27,7 +27,7 @@ function dockerFlywayMigration {
     WINDOWS_VOLUME=$(echo $DOCKER_VOLUME | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
     echo "----------Flyway Volume set to: $DOCKER_VOLUME"
     echo "----------Executing Flyway Migrations----------"
-    docker run --net=host --rm -v /${WINDOWS_VOLUME}:/flyway/sql boxfuse/flyway:5.2.4 -url="jdbc:sqlserver://localhost:$SQL_PORT;databaseName=PlanManagement;" -user=$SQL_USER -password=$SQL_PASS migrate
+    docker run --net=host --rm -v /${WINDOWS_VOLUME}:/flyway/sql boxfuse/flyway:5.2.4 -url="jdbc:sqlserver://localhost:$SQL_PORT;databaseName=$DB_NAME;" -user=$SQL_USER -password=$SQL_PASS migrate
 }
 
 function startDockerContainer {

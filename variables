@@ -3,3 +3,4 @@ SQL_USER=sa
 SQL_DOCKER_NAME="MsSqlTest"
 SQL_PORT=1433
 CONTAINER_NAME=sql-server:latest
+DB_NAME=MyFakeDatabase
