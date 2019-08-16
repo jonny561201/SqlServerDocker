@@ -9,7 +9,7 @@ function downloadDocker {
         exit 1
     else
         echo "----------Downloading Docker----------"
-        curl -L -o $DOCKER_TEMP_DIR "https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe"
+        curl -L -o ${DOCKER_TEMP_DIR} "https://download.docker.com/win/stable/Docker%20for%20Windows%20Installer.exe"
     fi
 }
 
@@ -17,12 +17,12 @@ function installingDocker {
     echo "----------Installing Docker----------"
     TEST_LOC="$DOCKER_TEMP_DIR/docker.exe"
     INSTALL_CMD="$DOCKER_TEMP_DIR"
-    cmd //c $INSTALL_CMD
+    cmd //c ${INSTALL_CMD}
 }
 
 function cleanupTempDir {
     echo "----------Cleanup Temp Dir----------"
-    rm -rf $WORK_DIR
+    rm -rf ${WORK_DIR}
 }
 
 if [[ $PATH == *"docker"* ]]; then
@@ -30,6 +30,7 @@ if [[ $PATH == *"docker"* ]]; then
 else
     downloadDocker
     installingDocker
+    cleanupTempDir
 fi
 
 

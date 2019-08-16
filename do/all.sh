@@ -4,7 +4,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 function isAdmin {
     net session > /dev/null 2>&1
-    if [ $? -eq 0 ]
+    if [[ $? -eq 0 ]]
         then
             return 0
         else
