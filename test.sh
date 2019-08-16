@@ -6,6 +6,11 @@ source $SCRIPT_DIR/variables
 
 
 function waitForHealthyContainer {
+    if [[ "$(docker inspect -f='{{.State.Status}}' $SQL_DOCKER_NAME)" = "exited" ]]
+    then
+        echo -e "${RED}ERROR: Docker container exited prematurely!!!"
+        exit 1
+    fi
     until [[ "$(docker inspect -f='{{.State.Health.Status}}' $SQL_DOCKER_NAME)" = "healthy" ]]; do
         echo "...waiting for container to become healthy..."
         sleep 1
