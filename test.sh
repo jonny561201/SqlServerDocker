@@ -5,9 +5,11 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/variables
 
 
-function sleepBeforeMigration {
-    echo "----------Sleeping Before Migration----------"
-    sleep 10
+function waitForHealthyContainer {
+    until [[ "$(docker inspect -f='{{.State.Health.Status}}' $SQL_DOCKER_NAME)" = "healthy" ]]; do
+        echo "...waiting for container to become healthy..."
+        sleep 1
+    done
 }
 
 function dockerSqlCreateDatabase {
@@ -41,6 +43,6 @@ function validateImageExists {
 
 validateImageExists
 startDockerContainer
-sleepBeforeMigration
+waitForHealthyContainer
 dockerSqlCreateDatabase
 dockerFlywayMigration
