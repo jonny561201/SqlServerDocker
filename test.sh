@@ -19,14 +19,12 @@ function dockerFlywayMigration {
     WINDOWS_VOLUME=$(echo $DOCKER_VOLUME | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
     echo "----------Flyway Volume set to: $DOCKER_VOLUME"
     echo "----------Executing Flyway Migrations----------"
-    docker run --net sqlserverdocker_default --rm -v /${WINDOWS_VOLUME}:/flyway/sql boxfuse/flyway:5.2.4 -url="jdbc:sqlserver://$SQL_DOCKER_NAME:$SQL_PORT;databaseName=PlanManagement;" -user=$SQL_USER -password=$SQL_PASS migrate
+    docker run --net=host --rm -v /${WINDOWS_VOLUME}:/flyway/sql boxfuse/flyway:5.2.4 -url="jdbc:sqlserver://localhost:$SQL_PORT;databaseName=PlanManagement;" -user=$SQL_USER -password=$SQL_PASS migrate
 }
 
 function dockerCompose {
-    echo "----------Starting Up Docker Images----------"
-    pushd $SCRIPT_DIR
-    docker-compose up -d
-    popd
+    echo "----------Starting Up Docker Container----------"
+    docker run --name=$SQL_DOCKER_NAME -d=true -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password123!' -e 'MSSQL_PID=Express' -p "$SQL_PORT:$SQL_PORT" $CONTAINER_NAME
 }
 
 
