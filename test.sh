@@ -35,6 +35,14 @@ function startDockerContainer {
     docker run --name=$SQL_DOCKER_NAME -d=true -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password123!' -e 'MSSQL_PID=Express' -p "$SQL_PORT:$SQL_PORT" $CONTAINER_NAME
 }
 
+function deleteExistingContainer {
+    if [[ ! -z $(docker ps -a -q -f "name=$SQL_DOCKER_NAME") ]]
+    then
+        echo "----------Deleting Exiting Container----------"
+        docker rm -f "$SQL_DOCKER_NAME"
+    fi
+}
+
 function validateImageExists {
     echo "----------Validating Docker Image----------"
     IMAGE_STATE=$(docker images -q $CONTAINER_NAME)
@@ -46,6 +54,7 @@ function validateImageExists {
 }
 
 
+deleteExistingContainer
 validateImageExists
 startDockerContainer
 waitForHealthyContainer
