@@ -1,10 +1,7 @@
 #!/bin/bash
 
-SQL_PASS=Password123!
-SQL_USER=sa
-SQL_DOCKER_NAME="MsSqlTest"
-SQL_PORT=1433
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source $SCRIPT_DIR/variables
 
 
 function sleepBeforeMigration {
