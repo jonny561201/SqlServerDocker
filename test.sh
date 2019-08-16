@@ -1,5 +1,6 @@
 #!/bin/bash
 
+RED='\033[0;31m'
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source $SCRIPT_DIR/variables
 
@@ -22,13 +23,24 @@ function dockerFlywayMigration {
     docker run --net=host --rm -v /${WINDOWS_VOLUME}:/flyway/sql boxfuse/flyway:5.2.4 -url="jdbc:sqlserver://localhost:$SQL_PORT;databaseName=PlanManagement;" -user=$SQL_USER -password=$SQL_PASS migrate
 }
 
-function dockerCompose {
+function startDockerContainer {
     echo "----------Starting Up Docker Container----------"
     docker run --name=$SQL_DOCKER_NAME -d=true -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password123!' -e 'MSSQL_PID=Express' -p "$SQL_PORT:$SQL_PORT" $CONTAINER_NAME
 }
 
+function validateImageExists {
+    echo "----------Validating Docker Image----------"
+    IMAGE_STATE=$(docker images -q $CONTAINER_NAME)
+    if [[ -z "$IMAGE_STATE" ]]
+    then
+        echo -e "${RED}ERROR: Please execute script file to create container!!!"
+        exit 1
+    fi
+}
 
-dockerCompose
+
+validateImageExists
+startDockerContainer
 sleepBeforeMigration
 dockerSqlCreateDatabase
 dockerFlywayMigration
