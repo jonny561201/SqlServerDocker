@@ -1,7 +1,5 @@
 #!/bin/bash
 
-RED='\033[0;31m'
-GREEN='\033[0;32m'
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 source ${SCRIPT_DIR}/variables
 
@@ -16,7 +14,7 @@ function waitForHealthyContainer {
         echo "...waiting for container to become healthy..."
         sleep 1
     done
-    echo -e "${GREEN}Container is healthy!"
+    echo -e "${GREEN}Container is healthy!${WHITE}"
 }
 
 function dockerSqlCreateDatabase {
