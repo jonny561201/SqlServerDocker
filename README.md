@@ -1,6 +1,6 @@
 # Intent
     The Goal of the project is to simplify the creation of a sql server docker container with a healthcheck.
-    The project also incorporates Flyway as a mechanism to perform versioned database migrations.
+    The project incorporates Flyway as a mechanism to perform versioned database migrations.
     Additionally Flyway allows for population of test data for use on delivery teams looking for a simple base project.
     All versioned sql scripts can be placed in the `docker/flyway/db/migration/` folder.
 
@@ -19,8 +19,3 @@
         - will create a new image of Sql Server with healthcheck
     3. Using bash terminal execute startContainer.sh 
         - will start container and execute flyway migration of any files in `docker/flyway/db/migration` directory
-
-# run a sql script from docker exec
-    -- get ip address of docker images
-    docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' container_name_or_id
-    
