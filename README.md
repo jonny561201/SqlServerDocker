@@ -2,6 +2,7 @@
     The Goal of the project is to simplify the creation of a sql server docker container with a healthcheck.
     The project also incorporates Flyway as a mechanism to perform versioned database migrations.
     Additionally Flyway allows for population of test data for use on delivery teams looking for a simple base project.
+    All versioned sql scripts can be placed in the `docker/flyway/db/migration/` folder.
 
 # Sample MS SQL Server Docker Project
     - Orchestrated setup of Sql Server Docker container
