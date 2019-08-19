@@ -5,8 +5,7 @@ source ${SCRIPT_DIR}/variables
 
 
 function waitForHealthyContainer {
-    if [[ "$(docker inspect -f='{{.State.Status}}' ${SQL_DOCKER_NAME})" = "exited" ]]
-    then
+    if [[ "$(docker inspect -f='{{.State.Status}}' ${SQL_DOCKER_NAME})" = "exited" ]] ; then
         echo -e "${RED}ERROR: Docker container exited prematurely!!!"
         exit 1
     fi
@@ -36,8 +35,7 @@ function startDockerContainer {
 }
 
 function deleteExistingContainer {
-    if [[ ! -z $(docker ps -a -q -f "name=$SQL_DOCKER_NAME") ]]
-    then
+    if [[ ! -z $(docker ps -a -q -f "name=$SQL_DOCKER_NAME") ]] ; then
         echo "----------Deleting Exiting Container----------"
         docker rm -f "$SQL_DOCKER_NAME"
     fi
@@ -46,8 +44,7 @@ function deleteExistingContainer {
 function validateImageExists {
     echo "----------Validating Docker Image----------"
     IMAGE_STATE=$(docker images -q ${CONTAINER_NAME})
-    if [[ -z "$IMAGE_STATE" ]]
-    then
+    if [[ -z "$IMAGE_STATE" ]] ; then
         echo -e "${RED}ERROR: Please execute script file to create container!!!"
         exit 1
     fi
