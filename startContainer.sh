@@ -17,32 +17,32 @@ function waitForHealthyContainer {
 }
 
 function dockerSqlCreateDatabase {
-    echo "----------Creating $DB_NAME Database----------"
+    echo -e "${YELLOW}----------Creating $DB_NAME Database----------${WHITE}"
     docker exec ${SQL_DOCKER_NAME} ./opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P ${SQL_PASS} -Q "CREATE DATABASE $DB_NAME;"
 }
 
 function dockerFlywayMigration {
     DOCKER_VOLUME=${SCRIPT_DIR}/docker/flyway/db/migration
     WINDOWS_VOLUME=$(echo ${DOCKER_VOLUME} | sed -e 's/^\///' -e 's/\//\\/g' -e 's/^./\0:/')
-    echo "----------Flyway Volume set to: $DOCKER_VOLUME"
-    echo "----------Executing Flyway Migrations----------"
+    echo -e "${YELLOW}----------Flyway Volume set to: $DOCKER_VOLUME${WHITE}"
+    echo -e "${YELLOW}----------Executing Flyway Migrations----------${WHITE}"
     docker run --net=host --rm -v /${WINDOWS_VOLUME}:/flyway/sql boxfuse/flyway:5.2.4 -url="jdbc:sqlserver://localhost:$SQL_PORT;databaseName=$DB_NAME;" -user=${SQL_USER} -password=${SQL_PASS} migrate
 }
 
 function startDockerContainer {
-    echo "----------Starting Up Docker Container----------"
+    echo -e "${YELLOW}----------Starting Up Docker Container----------${WHITE}"
     docker run --name=${SQL_DOCKER_NAME} -d=true -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=Password123!' -e 'MSSQL_PID=Express' -p "$SQL_PORT:$SQL_PORT" ${CONTAINER_NAME}
 }
 
 function deleteExistingContainer {
     if [[ ! -z $(docker ps -a -q -f "name=$SQL_DOCKER_NAME") ]] ; then
-        echo "----------Deleting Exiting Container----------"
+        echo -e "${YELLOW}----------Deleting Exiting Container----------${WHITE}"
         docker rm -f "$SQL_DOCKER_NAME"
     fi
 }
 
 function validateImageExists {
-    echo "----------Validating Docker Image----------"
+    echo -e "${YELLOW}----------Validating Docker Image----------${WHITE}"
     IMAGE_STATE=$(docker images -q ${CONTAINER_NAME})
     if [[ -z "$IMAGE_STATE" ]] ; then
         echo -e "${RED}ERROR: Please execute script file to create container!!!"
